@@ -1,6 +1,7 @@
 using Godot;
 using System;
 
+namespace SisyphusG {
 public abstract partial class BaseSingleton<T> : Node where T : Node
 {
 	private static T _instance = null;
@@ -25,4 +26,6 @@ public abstract partial class BaseSingleton<T> : Node where T : Node
 		}
 		_instance = this as T;
 	}
+}
+
 }

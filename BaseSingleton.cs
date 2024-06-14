@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-namespace SisyphusG {
+namespace SisyphusFramework {
 public abstract partial class BaseSingleton<T> : Node where T : Node
 {
 	private static T _instance = null;

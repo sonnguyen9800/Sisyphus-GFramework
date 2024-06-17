@@ -23,7 +23,7 @@ namespace SisyphusFramework.Popup
         }
 
         [Export]
-        private string _folderPath = "res://assets/_tcu/resources/popup/";
+        private string _folderPath = "";
 
         [Export]
         private CanvasLayer popupsContainer = null;

@@ -1,5 +1,6 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Godot;
@@ -37,9 +38,31 @@ namespace SisyphusFramework.Popup
         }
 
         #region Setup
+        private string[] LoadStringsPath(string folderPath)
+        {
+            List<string> scenes = new List<string>();
+            if (string.IsNullOrEmpty(folderPath))
+                return null;
+
+            using var dir = DirAccess.Open(folderPath);
+            if (dir == null)
+                return null;
+            dir.ListDirBegin();
+            var allFiles = dir.GetFiles();
+            foreach (var file in allFiles)
+            {
+                if (!file.EndsWith(".tscn"))
+                    continue;
+                string str = folderPath + file;
+                scenes.Add(str);
+            }
+            
+            return scenes.ToArray();
+        }
+
         private void LoadPopupsFromFolder(string folderPath)
         {
-            string[] sceneFiles = System.IO.Directory.GetFiles(folderPath, "*.tscn");
+            string[] sceneFiles = LoadStringsPath(folderPath);
 
             Parallel.ForEach(sceneFiles, scenePath =>
             {
@@ -59,7 +82,7 @@ namespace SisyphusFramework.Popup
 
 
 
-        #endregion
+#endregion
 
 
         #region Main

@@ -23,10 +23,10 @@ namespace SisyphusFramework.Popup
         }
 
         [Export]
-        private const string _folderPath = "res://assets/_tcu/resources/popup/";
+        private string _folderPath = "res://assets/_tcu/resources/popup/";
 
         [Export]
-        private const CanvasLayer popupsContainer = null;
+        private CanvasLayer popupsContainer = null;
 
         private List<PopupModel> _cachedPopups = new List<PopupModel>();
         private Queue<string> _queuePopupNames = new Queue<string>();
@@ -88,7 +88,9 @@ namespace SisyphusFramework.Popup
         #region Main
         public bool OpenPopup(string popupName, object param = null)
         {
-            var lastestPopup = _queuePopupNames.Peek();
+            string lastestPopup = string.Empty;
+            if (HasAnyActivePopup)
+                lastestPopup = _queuePopupNames.Peek();
             if (popupName == lastestPopup)
                 return false;
             if (lastestPopup != null)
@@ -220,14 +222,18 @@ namespace SisyphusFramework.Popup
 
         #region  Utils
 
-        private string RemovePopupSuffix(string popupName)
+        private string RemovePopupSuffix(string popupScenePath)
         {
-            int index = popupName.LastIndexOf("Popup.tscn");
-            if (index > 0)
+            int indexLast = popupScenePath.LastIndexOf("Popup.tscn");
+            int indexFirst = popupScenePath.IndexOf(_folderPath) + _folderPath.Length;
+            int length = indexLast - indexFirst;
+            if (indexLast > 0 && indexFirst > 0)
             {
-                return popupName.Substring(0, index);
+                string info = popupScenePath.Substring(indexFirst, length);
+                GD.Print(info);
+                return info;
             }
-            return popupName;
+            return popupScenePath;
         }
 
         #endregion

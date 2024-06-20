@@ -26,7 +26,7 @@ namespace SisyphusFramework.Popup
         private string _folderPath = "";
 
         [Export]
-        private CanvasLayer popupsContainer = null;
+        private Control popupsContainer = null;
 
         private List<PopupModel> _cachedPopups = new List<PopupModel>();
         private Queue<string> _queuePopupNames = new Queue<string>();
@@ -35,6 +35,11 @@ namespace SisyphusFramework.Popup
         public override void _Ready()
         {
             LoadPopupsFromFolder(_folderPath);
+        }
+
+        public override void _Process(double delta)
+        {
+            base._Process(delta);
         }
 
         #region Setup
@@ -107,15 +112,19 @@ namespace SisyphusFramework.Popup
         {
             if (_queuePopupNames.Count <= 0)
                 return;
-            var lastestPopup = _queuePopupNames.Dequeue();
+            var lastestPopup = _queuePopupNames.Peek();
             Hide(lastestPopup);
+            _queuePopupNames.Dequeue();
+
         }
         public void ClosePopup(string popupName){
             if (_queuePopupNames.Count <= 0)
                 return;
-            if (_queuePopupNames.Peek() == popupName)
-                _queuePopupNames.Dequeue();
+            if (_queuePopupNames.Peek() != popupName)
+                return;
             Hide(popupName);
+            _queuePopupNames.Dequeue();
+
         }
 
         public void CloseAllPopups()

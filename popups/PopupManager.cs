@@ -31,6 +31,14 @@ namespace SisyphusFramework.Popup
         private List<PopupModel> _cachedPopups = new List<PopupModel>();
         private Queue<string> _queuePopupNames = new Queue<string>();
 
+        public bool IsAnyPopupOpened
+        {
+
+            get
+            {
+                return _queuePopupNames.Count > 0;
+            }
+        }
         private ConcurrentBag<PopupResourcesModel> _popupDatabases = new ConcurrentBag<PopupResourcesModel>(); //new Lis();
         public override void _Ready()
         {

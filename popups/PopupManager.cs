@@ -196,8 +196,7 @@ namespace SisyphusFramework.Popup
             node.ProcessMode = ProcessModeEnum.Disabled;
 
             var popupBase = node as PopupBase;
-            popupBase.Visible = false;
-            popupBase.ClosePopup();
+            popupBase.OnHidden();
 
         }
 

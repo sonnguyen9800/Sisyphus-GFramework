@@ -46,7 +46,7 @@ namespace SisyphusFramework.Popup
 
         public virtual void OnShowing(object param = null)
         {
-
+            Visible = true;
         }
 
         public virtual void OnHiding()
@@ -56,7 +56,7 @@ namespace SisyphusFramework.Popup
 
         public virtual void OnHidden()
         {
-
+            Visible = false;
         }
 
         public virtual void ClosePopup()

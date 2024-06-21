@@ -197,6 +197,8 @@ namespace SisyphusFramework.Popup
 
             var popupBase = node as PopupBase;
             popupBase.Visible = false;
+            popupBase.ClosePopup();
+
         }
 
         bool IsLastest(string popupName)

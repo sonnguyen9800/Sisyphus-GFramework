@@ -34,14 +34,23 @@ namespace SisyphusFramework {
             await parentNode.ToSignal(tween, Tween.SignalName.Finished);
         }
 
-        public static async Task TweenMoveUpAndFadeOut(Node parentNode, GodotObject tweentarget, float duration = 1.0f, AlertType type = AlertType.Normal, float upLengh = 3.0f)
+        public static async Task TweenMoveUpAndFadeOut(Node parentNode, GodotObject tweentarget, float duration = 1.0f, float upLengh = 3.0f)
         {
-            var tween = parentNode.GetTree().CreateTween();
+            var tween1 = parentNode.GetTree().CreateTween();
+            var tween2 = parentNode.GetTree().CreateTween();
 
-            tween.TweenProperty(tweentarget, "position", Vector3.Up * upLengh, duration);
-            tween.Parallel().TweenProperty(tweentarget, "modulate:a", 0, duration).SetEase(Tween.EaseType.In);
-            await parentNode.ToSignal(tween, Tween.SignalName.Finished);
+            tween1.TweenProperty(tweentarget, "position", Vector2.Up * upLengh, duration).AsRelative().SetEase(Tween.EaseType.Out);
+            tween2.TweenProperty(tweentarget, "modulate:a", 0, duration).SetEase(Tween.EaseType.Out);
+            //await parentNode.ToSignal(tween1, Tween.SignalName.Finished);
+            await Task.WhenAll(TweenFinishedAsync(tween1), TweenFinishedAsync(tween2));
 
+        }
+
+        private static Task TweenFinishedAsync(Tween tween)
+        {
+            var tcs = new TaskCompletionSource<bool>();
+            tween.Finished += () => tcs.SetResult(true);
+            return tcs.Task;
         }
     }
 }

@@ -32,5 +32,12 @@ namespace SisyphusFramework
                 Events[eventType]?.Invoke(null, EventArgs.Empty);
             }
         }
+        public void Publish(T1 eventType, EventArgs param)
+        {
+            if (Events.ContainsKey(eventType) && Events[eventType] != null)
+            {
+                Events[eventType]?.Invoke(null, param);
+            }
+        }
     }
 }

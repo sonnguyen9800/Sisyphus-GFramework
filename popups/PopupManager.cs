@@ -29,7 +29,7 @@ namespace SisyphusFramework.Popup
         private Control popupsContainer = null;
 
         private List<PopupModel> _cachedPopups = new List<PopupModel>();
-        private Queue<string> _queuePopupNames = new Queue<string>();
+        private Stack<string> _queuePopupNames = new Stack<string>();
 
         public bool IsAnyPopupOpened
         {
@@ -106,9 +106,9 @@ namespace SisyphusFramework.Popup
                 lastestPopup = _queuePopupNames.Peek();
             if (popupName == lastestPopup)
                 return false;
-            if (lastestPopup != null)
-                Hide(lastestPopup);
-            _queuePopupNames.Enqueue(popupName);
+            //if (lastestPopup != null)
+            //    Hide(lastestPopup);
+            _queuePopupNames.Push(popupName);
             if (!IsCached(popupName))
                 CreatePopupInstance(popupName);
 
@@ -122,7 +122,7 @@ namespace SisyphusFramework.Popup
                 return;
             var lastestPopup = _queuePopupNames.Peek();
             Hide(lastestPopup);
-            _queuePopupNames.Dequeue();
+            _queuePopupNames.Pop();
 
         }
         public void ClosePopup(string popupName){
@@ -131,7 +131,7 @@ namespace SisyphusFramework.Popup
             if (_queuePopupNames.Peek() != popupName)
                 return;
             Hide(popupName);
-            _queuePopupNames.Dequeue();
+            _queuePopupNames.Pop();
 
         }
 
@@ -141,7 +141,7 @@ namespace SisyphusFramework.Popup
                 return;
             while (_queuePopupNames.Count > 0)
             {
-                var lastestPopup = _queuePopupNames.Dequeue();
+                var lastestPopup = _queuePopupNames.Pop();
                 Hide(lastestPopup);
             }
         }

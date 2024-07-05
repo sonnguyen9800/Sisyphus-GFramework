@@ -4,7 +4,7 @@ using Events;
 
 namespace SisyphusFramework
 {
-    public partial class SingletonEventHub<T, T1> : BaseSingleton<SingletonEventHub<T, T1>>
+    public partial class SingletonEventHub<T, T1 > : BaseSingleton<SingletonEventHub<T, T1>> where T1 : EventArgs
     {
         private readonly IDictionary<T, EventHandler<T1>> Events = new Dictionary<T, EventHandler<T1>>();
 

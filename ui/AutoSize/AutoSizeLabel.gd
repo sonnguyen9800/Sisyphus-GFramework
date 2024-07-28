@@ -14,6 +14,7 @@ class_name AutoSizeLabel extends Label
 func _ready() -> void:
 	clip_text = true
 	item_rect_changed.connect(update)
+	AutoSizer.update_font_size_label(self)
 
 func _set(property: StringName, value: Variant) -> bool:
 	# Listen for changes to text

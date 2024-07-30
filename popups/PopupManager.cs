@@ -1,9 +1,12 @@
+#define LOG_OUTPUT_INFO
+
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Godot;
+
 
 namespace SisyphusFramework.Popup
 {
@@ -24,12 +27,13 @@ namespace SisyphusFramework.Popup
 
         [Export]
         private string _folderPath = "";
-
+        [Export] private string[] _scenePaths = null;
         [Export]
         private Control popupsContainer = null;
 
         private List<PopupModel> _cachedPopups = new List<PopupModel>();
         private Stack<string> _queuePopupNames = new Stack<string>();
+
 
         public bool IsAnyPopupOpened
         {
@@ -61,7 +65,12 @@ namespace SisyphusFramework.Popup
 
             using var dir = DirAccess.Open(folderPath);
             if (dir == null)
+            {
+                GD.Print("Cannot open dir");
                 return null;
+            }
+
+
             dir.ListDirBegin();
             var allFiles = dir.GetFiles();
             foreach (var file in allFiles)
@@ -77,9 +86,11 @@ namespace SisyphusFramework.Popup
 
         private void LoadPopupsFromFolder(string folderPath)
         {
-            string[] sceneFiles = LoadStringsPath(folderPath);
-
-            Parallel.ForEach(sceneFiles, scenePath =>
+#if TOOLS
+            _scenePaths = new string[0];
+            _scenePaths = LoadStringsPath(folderPath);
+#endif
+            Parallel.ForEach(_scenePaths, scenePath =>
             {
                 var scene = ResourceLoader.Load<PackedScene>(scenePath);
                 var name = RemovePopupSuffix(scenePath);
@@ -93,6 +104,8 @@ namespace SisyphusFramework.Popup
             GD.Print("Loaded popup: " + scenePath);
 #endif
             });
+
+
         }
 
 
@@ -103,7 +116,11 @@ namespace SisyphusFramework.Popup
         #region Public
         public bool OpenPopup(string popupName, object param = null)
         {
+            GD.Print("Hi there from OpenPopup");
+
             if (_isLocked) return false;
+            GD.Print("Hi there from OpenPopup", popupName);
+
             string lastestPopup = string.Empty;
             if (HasAnyActivePopup)
                 lastestPopup = _queuePopupNames.Peek();

@@ -40,6 +40,8 @@ namespace SisyphusFramework.Popup
             }
         }
         private ConcurrentBag<PopupResourcesModel> _popupDatabases = new ConcurrentBag<PopupResourcesModel>(); //new Lis();
+
+        private bool _isLocked = false;
         public override void _Ready()
         {
             LoadPopupsFromFolder(_folderPath);
@@ -98,9 +100,10 @@ namespace SisyphusFramework.Popup
 #endregion
 
 
-        #region Main
+        #region Public
         public bool OpenPopup(string popupName, object param = null)
         {
+            if (_isLocked) return false;
             string lastestPopup = string.Empty;
             if (HasAnyActivePopup)
                 lastestPopup = _queuePopupNames.Peek();
@@ -145,7 +148,10 @@ namespace SisyphusFramework.Popup
                 Hide(lastestPopup);
             }
         }
-
+        public void ToggleLocked(bool value)
+        {
+            _isLocked = value;
+        }
         #endregion
 
         #region Prive

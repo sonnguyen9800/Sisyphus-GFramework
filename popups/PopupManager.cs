@@ -109,8 +109,8 @@ namespace SisyphusFramework.Popup
                 lastestPopup = _queuePopupNames.Peek();
             if (popupName == lastestPopup)
                 return false;
-            //if (lastestPopup != null)
-            //    Hide(lastestPopup);
+            if (lastestPopup != null)
+                Hide(lastestPopup);
             _queuePopupNames.Push(popupName);
             if (!IsCached(popupName))
                 CreatePopupInstance(popupName);

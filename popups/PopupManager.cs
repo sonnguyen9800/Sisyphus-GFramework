@@ -202,6 +202,7 @@ namespace SisyphusFramework.Popup
             cachePopup.ProcessMode = ProcessModeEnum.Always;
 
             var popupBase = cachePopup as PopupBase;
+
             popupBase.OnShowing(param);
             popupBase.Visible = true;
         }

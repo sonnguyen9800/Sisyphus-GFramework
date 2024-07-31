@@ -1,4 +1,4 @@
-#define LOG_OUTPUT_INFO
+#define LOG_OUTPUT_INFO1
 
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -116,11 +116,7 @@ namespace SisyphusFramework.Popup
         #region Public
         public bool OpenPopup(string popupName, object param = null)
         {
-            GD.Print("Hi there from OpenPopup");
-
             if (_isLocked) return false;
-            GD.Print("Hi there from OpenPopup", popupName);
-
             string lastestPopup = string.Empty;
             if (HasAnyActivePopup)
                 lastestPopup = _queuePopupNames.Peek();
@@ -271,7 +267,6 @@ namespace SisyphusFramework.Popup
             if (indexLast > 0 && indexFirst > 0)
             {
                 string info = popupScenePath.Substring(indexFirst, length);
-                GD.Print(info);
                 return info;
             }
             return popupScenePath;
